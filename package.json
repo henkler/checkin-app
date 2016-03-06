@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "meteor --settings settings.json"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "react-dom": "^0.14.7",
     "react-mounter": "^1.1.0",
     "react-router": "^2.0.0",
-    "react-tap-event-plugin": "^0.2.2"
+    "react-tap-event-plugin": "^0.2.2",
+    "yelp": "^1.0.1"
   }
 }
