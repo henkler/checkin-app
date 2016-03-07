@@ -14,10 +14,8 @@ function searchYelp(req, callback) {
 const wrappedSearchYelp = Meteor.wrapAsync(searchYelp);
 
 Meteor.methods({
-  getNearby() {
-    const searchData = wrappedSearchYelp({ term: 'bar', location: '60640' });
-
-    const businesses = searchData.businesses.map(business => ({name: business.name}));
-    return JSON.stringify(businesses);
+  getNearby(location) {
+    const searchData = wrappedSearchYelp({ term: 'bar', location: location });
+    return searchData.businesses;
   }
 });
