@@ -14,8 +14,21 @@ function searchYelp(req, callback) {
 const wrappedSearchYelp = Meteor.wrapAsync(searchYelp);
 
 Meteor.methods({
-  getNearby(location) {
-    const searchData = wrappedSearchYelp({ term: 'bar', location: location });
+  getNearby(location, latitude = null, longitude = null) {
+    const searchQuery = {};
+    searchQuery.term = 'bar';
+
+    if (location !== null) {
+      searchQuery.location = location;
+      if (latitude !== null && longitude !== null) {
+        searchQuery.cll = latitude + ',' + longitude;
+      }
+    }
+    else if (latitude !== null && longitude !== null) {
+      searchQuery.ll = latitude + ',' + longitude;
+    }
+
+    const searchData = wrappedSearchYelp(searchQuery);
     return searchData.businesses;
   }
 });

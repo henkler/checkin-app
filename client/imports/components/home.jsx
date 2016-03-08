@@ -11,7 +11,12 @@ class Home extends React.Component {
     };
   }
   componentWillMount() {
-    Meteor.call('getNearby', 'San Diego', (error, result) => this.setState({ businesses: result }));
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.getNearby.bind(this));
+    }
+  }
+  getNearby(position) {
+    Meteor.call('getNearby', null, position.coords.latitude, position.coords.longitude, (error, result) => this.setState({ businesses: result }));
   }
   render() {
     return (
