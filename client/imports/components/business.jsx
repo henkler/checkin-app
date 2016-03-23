@@ -39,7 +39,9 @@ export const Business = (props) => (
                     onClick={() => window.open(props.url, '_blank')}
                 />
             </CardText>
-            <CardActions>
+            <CardActions
+                style={{visibility: props.isLoggedIn ? 'visible' : 'hidden'}}
+            >
                 <Toggle
                     label="I'm Going Tonight"
                     labelPosition="right"

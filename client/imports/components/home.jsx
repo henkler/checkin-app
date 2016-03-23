@@ -1,5 +1,7 @@
 import React from 'react';
+import reactMixin from 'react-mixin';
 import { Meteor } from 'meteor/meteor';
+import {ReactMeteorData} from 'meteor/react-meteor-data';
 import * as _ from 'lodash';
 
 import { BusinessList } from './businessList.jsx';
@@ -17,6 +19,12 @@ class Home extends React.Component {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.getNearby);
     }
+  }
+  getMeteorData() {
+    return {
+      user: Meteor.user(),
+      isLoggedIn: Meteor.userId() !== null
+    };
   }
   getNearby(position) {
     Meteor.call('getNearby', null, position.coords.latitude, position.coords.longitude, (error, result) => this.setState({ businesses: result }));
@@ -39,12 +47,12 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <h1>My App</h1>
-        <hr />
-        <BusinessList businesses={this.state.businesses} doCheckin={this.doCheckin} />
+        <BusinessList businesses={this.state.businesses} isLoggedIn={this.data.isLoggedIn} doCheckin={this.doCheckin} />
       </div>
     );
   }
 }
+
+reactMixin(Home.prototype, ReactMeteorData);
 
 export { Home };

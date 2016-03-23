@@ -33,10 +33,7 @@ Meteor.methods({
       const checkins = Checkins.find({businessID: business.id});
       if (checkins) {
         business.checkinCount = checkins.count();
-        business.isGoing = true;
-      }
-      else {
-        business.isGoing = false;
+        business.isGoing = checkins.count() > 0;
       }
     });
     return searchData.businesses;
