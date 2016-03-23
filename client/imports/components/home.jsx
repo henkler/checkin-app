@@ -1,8 +1,7 @@
 import React from 'react';
 import reactMixin from 'react-mixin';
 import { Meteor } from 'meteor/meteor';
-import {ReactMeteorData} from 'meteor/react-meteor-data';
-import * as _ from 'lodash';
+import { ReactMeteorData } from 'meteor/react-meteor-data';
 
 import { BusinessList } from './businessList.jsx';
 
@@ -10,44 +9,48 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.doCheckin = this.doCheckin.bind(this);
-    this.getNearby = this.getNearby.bind(this);
+    this.setCurrentPosition = this.setCurrentPosition.bind(this);
     this.state = {
-      businesses: [],
+      latitude: null,
+      longitude: null,
+      businesses: []
     };
   }
   componentWillMount() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.getNearby);
+      navigator.geolocation.getCurrentPosition(this.setCurrentPosition);
     }
   }
   getMeteorData() {
+    let businesses = [];
+
+    var handle = Meteor.subscribe('nearbyBars', null, this.state.latitude, this.state.longitude);
+    if (handle.ready()) {
+      businesses = Businesses.find().fetch();
+    }
     return {
       user: Meteor.user(),
-      isLoggedIn: Meteor.userId() !== null
+      isLoggedIn: Meteor.userId() !== null,
+      businesses
     };
   }
-  getNearby(position) {
-    Meteor.call('getNearby', null, position.coords.latitude, position.coords.longitude, (error, result) => this.setState({ businesses: result }));
+  setCurrentPosition(position) {
+    this.setState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    });
   }
   doCheckin(businessID, isGoing) {
-    Meteor.call('checkIn', businessID, isGoing, function(error, result) {
-      if(!error) {
-        this.updateBusinessCheckinCount(businessID, result, isGoing);
-      }
-    }.bind(this));
-  }
-  updateBusinessCheckinCount(businessID, checkinCount, isGoing) {
-    const business = _.find(this.state.businesses, {'id': businessID});
-    if (business) {
-      business.checkinCount = checkinCount;
-      business.isGoing = isGoing;
-      this.setState({businesses: this.state.businesses});
-    }
+    Meteor.call('checkIn', businessID, isGoing);
   }
   render() {
     return (
       <div>
-        <BusinessList businesses={this.state.businesses} isLoggedIn={this.data.isLoggedIn} doCheckin={this.doCheckin} />
+        <BusinessList
+            businesses={this.data.businesses}
+            isLoggedIn={this.data.isLoggedIn}
+            doCheckin={this.doCheckin}
+        />
       </div>
     );
   }
