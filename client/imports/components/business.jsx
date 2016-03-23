@@ -12,7 +12,7 @@ import Avatar from 'material-ui/lib/avatar';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 
 const style = {
-    width: 300,
+    width: 350,
     margin: 10,
     textAlign: 'center',
     display: 'inline-block',
