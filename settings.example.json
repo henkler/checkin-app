@@ -1,0 +1,8 @@
+{
+  "yelp": {
+    "consumer_key": "CHANGE_ME",
+    "consumer_secret": "CHANGE_ME",
+    "token": "CHANGE_ME",
+    "token_secret": "CHANGE_ME"
+  }
+}

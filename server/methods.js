@@ -29,6 +29,31 @@ Meteor.methods({
     }
 
     const searchData = wrappedSearchYelp(searchQuery);
+    searchData.businesses.forEach( function(business) {
+      const checkins = Checkins.find({businessID: business.id});
+      if (checkins) {
+        business.checkinCount = checkins.count();
+        business.isGoing = true;
+      }
+      else {
+        business.isGoing = false;
+      }
+    });
     return searchData.businesses;
+  },
+  checkIn(businessID, isGoing) {
+    const checkin = Checkins.findOne({businessID: businessID});
+
+    if(isGoing && !checkin) {
+      Checkins.insert({
+        businessID: businessID
+      });
+    }
+    else if (!isGoing && checkin) {
+      Checkins.remove(checkin);
+    }
+
+    // return the number going
+    return Checkins.find({businessID: businessID}).count();
   }
 });
