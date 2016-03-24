@@ -7,27 +7,27 @@ import AppBar from 'material-ui/lib/app-bar';
 import { AccountsUIWrapper } from './accountsUIWrapper.jsx';
 
 const styles = {
-    container: {
-        textAlign: 'center',
-    },
+  container: {
+    textAlign: 'center'
+  }
 };
 
 const muiTheme = getMuiTheme({
-    palette: {
-        accent1Color: deepOrange500,
-    },
+  palette: {
+    accent1Color: deepOrange500
+  }
 });
 
 // define and export our Layout component
 export const App = (props) => (
     <MuiThemeProvider muiTheme={muiTheme}>
-        <div style={styles.container}>
-            <AppBar
-                title="Checkin App"
-                iconElementRight={<AccountsUIWrapper />}
-                zDepth={4}
-            />
-            {props.children}
-        </div>
+      <div style={styles.container}>
+        <AppBar
+            title="Checkin App"
+            iconElementRight={<AccountsUIWrapper />}
+            zDepth={4}
+        />
+        {props.children}
+      </div>
     </MuiThemeProvider>
 );

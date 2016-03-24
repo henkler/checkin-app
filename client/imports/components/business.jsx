@@ -12,43 +12,43 @@ import Avatar from 'material-ui/lib/avatar';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 
 const style = {
-    width: 350,
-    margin: 10,
-    textAlign: 'center',
-    display: 'inline-block',
+  width: 350,
+  margin: 10,
+  textAlign: 'center',
+  display: 'inline-block'
 };
 
 export const Business = (props) => (
     <Paper style={style} zDepth={4}>
-        <Card>
-            <CardHeader
-                title={<h3>{`${props.checkinCount} Going Tonight`}</h3>}
-            />
-            <CardMedia
-                overlay={<CardTitle title={props.name} />}
-            >
-                <img src={props.image_url} />
-            </CardMedia>
-            <CardText>
-                <Avatar src={props.snippet_image_url} />
-                <img src={props.rating_img_url} />
-                <p>{props.snippet_text}</p>
-                <FlatButton
-                    label="View Yelp Page"
-                    secondary={true}
-                    onClick={() => window.open(props.url, '_blank')}
-                />
-            </CardText>
-            <CardActions
-                style={{visibility: props.isLoggedIn ? 'visible' : 'hidden'}}
-            >
-                <Toggle
-                    label="I'm Going Tonight"
-                    labelPosition="right"
-                    toggled={props.isGoing}
-                    onToggle={(event, isInputChecked) => props.doCheckin(props.id, isInputChecked)}
-                />
-            </CardActions>
-        </Card>
+      <Card>
+        <CardHeader
+          title={<h3>{`${props.checkinCount} Going Tonight`}</h3>}
+        />
+        <CardMedia
+          overlay={<CardTitle title={props.name} />}
+        >
+          <img src={props.image_url} />
+        </CardMedia>
+        <CardText>
+          <Avatar src={props.snippet_image_url} />
+          <img src={props.rating_img_url} />
+          <p>{props.snippet_text}</p>
+          <FlatButton
+              label="View Yelp Page"
+              secondary={true}
+              onClick={() => window.open(props.url, '_blank')}
+          />
+        </CardText>
+        <CardActions
+          style={ { visibility: props.isLoggedIn ? 'visible' : 'hidden' } }
+        >
+          <Toggle
+            label="I'm Going Tonight"
+            labelPosition="right"
+            toggled={props.isGoing}
+            onToggle={(event, isInputChecked) => props.doCheckin(props.id, isInputChecked)}
+          />
+        </CardActions>
+      </Card>
     </Paper>
 );

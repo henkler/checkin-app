@@ -28,24 +28,36 @@ class Home extends React.Component {
       longitude: null
     };
   }
+
   componentWillMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.setCurrentPosition);
     }
   }
+
   getMeteorData() {
     let businesses = [];
 
-    var handle = Meteor.subscribe('nearbyBars', this.state.location, this.state.latitude, this.state.longitude);
+    const handle = Meteor.subscribe('nearbyBars',
+        this.state.location, this.state.latitude, this.state.longitude);
     if (handle.ready()) {
       businesses = Businesses.find().fetch();
     }
+
     return {
       user: Meteor.user(),
       isLoggedIn: Meteor.userId() !== null,
       businesses
     };
   }
+
+  setCurrentPosition(position) {
+    this.setState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    });
+  }
+
   locationInputChanged(event) {
     let locationInput = event.target.value;
     if (!locationInput) {
@@ -53,39 +65,36 @@ class Home extends React.Component {
     }
     this.setState({ locationInput });
   }
-  setCurrentPosition(position) {
-    this.setState({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    });
-  }
+
   doCheckin(businessID, isGoing) {
     Meteor.call('checkIn', businessID, isGoing);
   }
+
   doSearch() {
     this.setState({ location: this.state.locationInput });
   }
+
   render() {
     return (
-      <div>
-        <Paper style={style} zDepth={4}>
-          <TextField
+        <div>
+          <Paper style={style} zDepth={4}>
+            <TextField
               hintText="Search Location"
               onChange={(event) => this.locationInputChanged(event)}
               onEnterKeyDown={(event) => this.doSearch()}
-          />
-          <RaisedButton
+            />
+            <RaisedButton
               label="Search"
               secondary={true}
               onClick={(event) => this.doSearch()}
-          />
-        </Paper>
-        <BusinessList
+            />
+          </Paper>
+          <BusinessList
             businesses={this.data.businesses}
             isLoggedIn={this.data.isLoggedIn}
             doCheckin={this.doCheckin}
-        />
-      </div>
+          />
+        </div>
     );
   }
 }
